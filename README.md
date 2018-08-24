@@ -4,7 +4,7 @@ Gets current temperature from OpenWeatherMap.org and writes it to a text file. C
 ### How to use
 - Go to [OpenWeatherMap](https://openweathermap.org/). Search for a city and copy the number after ``https://openweathermap.org/city/``. For example, for Los Angeles it's **5368361**. When requested, paste that number into the console.
 - Set a refresh interval in minutes, it has to be greater than 1.
-- A file called ``weather.txt`` will be created at the same path as the executable. Use that file in OBS or any streaming software to show the current temperature in your stream! The file will be updated at the refresh interval you set before.
+- A file called ``weather.txt`` with the temperature in Celsius will be created at the same path as the executable. Use that file in OBS or any streaming software to show the current temperature in your stream! The file will be updated at the refresh interval you set before.
 
 ### Building from source
 - Requisites: Node.js (preferably the latest version)
