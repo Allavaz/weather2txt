@@ -1,0 +1,20 @@
+{
+  "name": "weather2txt",
+  "version": "1.0.0",
+  "description": "Gets current temperature from OpenWeatherMap.org and writes it to a text file, useful for streamers.",
+  "main": "index.js",
+  "dependencies": {
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "streaming",
+    "weather",
+    "text"
+  ],
+  "author": "davidzavalla",
+  "license": "ISC"
+}
