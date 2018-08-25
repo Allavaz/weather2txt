@@ -6,7 +6,6 @@ var url
 var txt
 var rate
 var city
-var d = new Date()
 var apikey
 var json = {}
 var noCity = false
@@ -117,8 +116,7 @@ function requestWeather(url) {
     request({ url: url, json: true }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             txt = Math.round(body.main.temp) + "ºC"
-            console.log()
-            console.log("Current temperature at " + d.getHours() + ":" + d.getMinutes() + " is " + txt + ".")
+            console.log()       
             fs.writeFile("./weather.txt", txt, function (error){
                 if (!error) {
                     console.log()
@@ -127,6 +125,7 @@ function requestWeather(url) {
                     console.log("Refreshing in " + rate/60000 + " minutes...")   
                 }
             })
+            console.log("Current temperature is " + txt + ".")
         }
     })
     console.log()
