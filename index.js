@@ -17,7 +17,6 @@ const rl = readline.createInterface({
     output: process.stdout
 })
 
-console.log()
 console.log("Welcome to Weather2TXT!")
 console.log()
 
