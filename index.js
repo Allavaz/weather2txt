@@ -10,6 +10,7 @@ var d = new Date()
 var apikey
 var json = {}
 var noCity = false
+var noAPI = false
 var cityQuestion
 
 const rl = readline.createInterface({
@@ -27,13 +28,14 @@ function main() {
     fs.readFile("./weather2txt-settings.json", function(error, data) {
         if (error) {
             noCity = true
+            noAPI = true
             console.log("Looks like it's the first time you run this program. In order to get started, register at openweathermap.org and get an API key (it's free!)")
             console.log()
             askAPI()
         } else {
             json = JSON.parse(data)
             apikey = json.apikey
-            askCity()
+            askAPI()
         }
     })
 }
@@ -53,6 +55,9 @@ function askAPI() {
             }
         })
     })
+    if (!noAPI){
+        rl.write(json.apikey)
+    }
 }
 
 function askCity() {
@@ -62,34 +67,35 @@ function askCity() {
         cityQuestion = "Enter City ID (" + json.cityname + "): "
     }
     rl.question(cityQuestion, (answer) => {
-        if (answer == "") {
-            url = "http://api.openweathermap.org/data/2.5/weather?id=" + json.cityid + "&units=metric&appid=" + json.apikey
-            city = json.cityname
-            askInterval()
-        } else {
-            url = "http://api.openweathermap.org/data/2.5/weather?id=" + answer + "&units=metric&appid=" + apikey
-            request({ url: url, json: true }, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    city = body.name
-                    json.apikey = apikey
-                    json.cityid = answer
-                    json.cityname = city
-                    noCity = false
-                    json = JSON.stringify(json)
-                    fs.writeFile("./weather2txt-settings.json", json, function (error){
-                        
-                    })
-                    askInterval()
-                }
-                else {
-                    console.log()
-                    console.log("Wrong City ID, try again.")
-                    askCity()
-                }
-            })
-        }
-        
+        url = "http://api.openweathermap.org/data/2.5/weather?id=" + answer + "&units=metric&appid=" + apikey
+        request({ url: url, json: true }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                city = body.name
+                console.log()
+                console.log("You've selected " + city + ".")
+                console.log()
+                json.apikey = apikey
+                json.cityid = answer
+                json.cityname = city
+                noCity = false
+                json = JSON.stringify(json)
+                fs.writeFile("./weather2txt-settings.json", json, function (error){
+                    
+                })
+                askInterval()
+            }
+            else {
+                console.log()
+                console.log("Wrong City ID, try again.")
+                console.log()
+                askCity()
+            }
+        })
     })
+
+    if (!noCity){
+        rl.write(json.cityid)
+    }
 }
 
 function askInterval() {
@@ -101,7 +107,7 @@ function askInterval() {
         } else {
             rate = answer * 60000
             requestWeather(url)
-            setInterval(requestWeather, 60000, url)
+            setInterval(requestWeather, rate, url)
             rl.close()
         }
     })
@@ -112,7 +118,7 @@ function requestWeather(url) {
         if (!error && response.statusCode == 200) {
             txt = Math.round(body.main.temp) + "ºC"
             console.log()
-            console.log("Current temperature in " + city + " at " + d.getHours() + ":" + d.getMinutes() + " is " + txt + ".")
+            console.log("Current temperature at " + d.getHours() + ":" + d.getMinutes() + " is " + txt + ".")
             fs.writeFile("./weather.txt", txt, function (error){
                 if (!error) {
                     console.log()
