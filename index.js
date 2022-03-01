@@ -1,6 +1,6 @@
-import readline from "readline";
-import fetch from "node-fetch";
-import fs from "fs";
+const readline = require("readline");
+const fetch = require("node-fetch");
+const fs = require("fs");
 
 let url
 let txt;
